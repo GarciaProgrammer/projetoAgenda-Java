@@ -20,10 +20,8 @@ public class UsuarioDAO {
 
             ResultSet rsLogin = pstm.executeQuery();
 
-            //Verifica se existe registro
-            rsLogin.last();
-            if (rsLogin.getRow() > 0) {
-                rsLogin.first();
+          
+            if(rsLogin != null) {
                 while (rsLogin.next()) {
                     usuarioLogin = new Usuario(rsLogin.getString("login"), rsLogin.getString("senha"));
                     usuarioLogin.setId(rsLogin.getInt("id"));
@@ -33,11 +31,10 @@ public class UsuarioDAO {
             } else {
                 return null;
             }
-
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Erro de SQL", JOptionPane.ERROR_MESSAGE);
         }
-
+        return null;
     }
 
 }

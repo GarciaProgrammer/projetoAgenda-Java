@@ -10,6 +10,7 @@ import br.com.agenda.conection.ConnectionFactory;
 import br.com.agenda.dao.UsuarioDAO;
 import br.com.agenda.panels.CadPessoas;
 import br.com.agenda.panels.CadUsuario;
+import br.com.agenda.panels.ListPessoas;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -20,8 +21,8 @@ import javax.swing.JPanel;
  */
 public class TelaPrincipal extends javax.swing.JFrame {
 
-    private Usuario usuarioLagado;
-    private daoUsuario = new UsuarioDAO();
+    private Usuario usuarioLogado;
+    private UsuarioDAO daoUsuario = new UsuarioDAO();
 
     public TelaPrincipal() {
         initComponents();
@@ -32,7 +33,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
         //conecta com o banco
         Connection cnn = ConnectionFactory.getConnection();
         //esconde Menu
-        if (usuarioLagado == null) {
+        if (usuarioLogado == null) {
             mnBar.setVisible(false);
         }
 
@@ -77,7 +78,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jLabel2.setText("Senha");
 
         pswSenha.setFont(new java.awt.Font("Dubai", 1, 14)); // NOI18N
-        pswSenha.setText("jPasswordField1");
+        pswSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pswSenhaActionPerformed(evt);
+            }
+        });
 
         btnEntrar.setBackground(new java.awt.Color(153, 153, 0));
         btnEntrar.setText("Entrar");
@@ -184,7 +189,7 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void mnCadastroDePessoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCadastroDePessoaActionPerformed
         // TODO add your handling code here:
-        JPanel cadPessoas = new CadPessoas();
+        JPanel cadPessoas = new ListPessoas();
         setContentPane(cadPessoas);
         pack();
         setVisible(true);
@@ -203,18 +208,22 @@ public class TelaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         String login = txtLogin.getText();
         String senha = pswSenha.getText();
-        
-        if(!"".equals(login) && !"".equals(senha)){
-            usuarioLogado = daoUsuario.fazerLogin(login,senha);
-            
-            if(usuarioLogado != null && usuarioLogado.getIdPessoa() > )
+
+        if (!"".equals(login) && !"".equals(senha)) {
+            usuarioLogado = daoUsuario.fazerLogin(login, senha);
+
+            if (usuarioLogado != null && usuarioLogado.getId_pessoa() > 0) {
                 mnBar.setVisible(true);
-            panelLogin.setVisible(false);
-        }else {
-            JOptionPane.showMessageDialog(this, "Informe seu login/senha");
+                panelLogin.setVisible(false);
+            } else {
+                JOptionPane.showMessageDialog(this, "Informe seu login/senha");
+            }
         }
-        
     }//GEN-LAST:event_btnEntrarActionPerformed
+
+    private void pswSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pswSenhaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_pswSenhaActionPerformed
 
     /**
      * @param args the command line arguments
